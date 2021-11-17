@@ -29,10 +29,10 @@ app.get("/api/", (req, res) => {
   // UTC Date String
   let timeNow = now.toUTCString(); // "Sun, 30 May 2021 14:59:15 GMT"
 
-  let unix = new Date().getTime() / 1000;
+  let unix = new Date().getTime();
 
   res.json({
-    unix: timeNow,
+    unix: unix,
     utc: timeNow,
   });
 });
