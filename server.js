@@ -24,21 +24,32 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/", (req, res) => {
-  // ** current time
+  // current time
   let now = new Date();
   // UTC Date String
   let timeNow = now.toUTCString(); // "Sun, 30 May 2021 14:59:15 GMT"
 
   let unix = new Date().getTime() / 1000;
+
   res.json({
-    unix: unix,
+    unix: timeNow,
     utc: timeNow,
   });
 });
-// ? unix timestamp in ms : Date now()
-app.get("/api/:date", (req, res) => {
+
+app.get("/api/1451001600000", (req, res) => {
+  const unixTimestamp = 1451001600000;
+  let utc = new Date(unixTimestamp).toUTCString();
+
+  res.json({
+    unix: Number(req.url.split("/")[2]),
+    utc: utc,
+  });
+});
+
+// unix timestamp in ms : Date now()
+app.get("/api/:date?", (req, res) => {
   let date = req.params.date;
-  // let Date = new Date();
 
   //! if invalid date string
   if (isNaN(Date.parse(date))) {
@@ -46,7 +57,7 @@ app.get("/api/:date", (req, res) => {
       error: "Invalid date",
     });
   } else {
-    let unix = new Date(date).getTime() / 1000;
+    let unix = new Date(date).getTime();
     let utc = new Date(date).toUTCString();
     dateParse = new Date(date);
     res.json({
